@@ -8,8 +8,12 @@ namespace MultiThreading.Factories
         {
             switch (breakast)
             {
-                case "Bacon Egg And Cheese":
+                case "BaconEggAndCheese":
                     return new BaconEggAndCheeseAlgorithm();
+                case "EggAndCheese":
+                    return new EggAndCheeseAlgorithm();
+                case "Bacon":
+                    return new BaconAlgorithm();
                 default:
                     return null;
             }

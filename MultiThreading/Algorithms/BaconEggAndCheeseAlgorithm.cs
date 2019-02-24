@@ -9,15 +9,16 @@ namespace MultiThreading.Algorithms
         /// <summary>
         /// Algorithm to make breakfast.
         /// </summary>
-        public override void Make()
+        /// <param name="name">The name of the person making breakfast.</param>
+        public override void Make(string name)
         {
             var stopWatch = Stopwatch.StartNew();
 
-            GrabIngredients();
-            SprayAndHeatPan();
-            CookEggs();
-            CookBacon();
-            ToastBread();
+            GrabIngredients(name);
+            SprayAndHeatPan(name);
+            CookEggs(name);
+            CookBacon(name);
+            ToastBread(name);
 
             stopWatch.Stop();
 
@@ -27,126 +28,155 @@ namespace MultiThreading.Algorithms
         /// <summary>
         /// Algorithm to make breakfast asynchronously.
         /// </summary>
-        public async override Task MakeAsync()
+        /// <param name="name">The name of the person making breakfast.</param>
+        public async override Task MakeAsync(string name)
         {
             var stopWatch = Stopwatch.StartNew();
 
-            SprayAndHeatPanAsync();
-            GrabIngredients();
-            ToastBreadAsync();
-            await CookEggsAsync();
-            CookBacon();
+            SprayAndHeatPanAsync(name);
+            GrabIngredients(name);
+            ToastBreadAsync(name);
+            await CookEggsAsync(name);
+            CookBacon(name);
 
             stopWatch.Stop();
-
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
         }
 
         /// <summary>
         /// Grab the ingredients.
         /// </summary>
-        private void GrabIngredients()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void GrabIngredients(string name)
         {
-            Console.WriteLine("Grab bacon, eggs, cheese and bread from the fridge.");
-            // Let's imagine this takes 2 second to do...
-            Task.Delay(2000).Wait();
+            // Imagine this is a call to a repository (cache and/or DB). Each
+            // item is a table from the "fridge" DB and it takes a second to get
+            // each.
+            Console.WriteLine($"> {name} grabs bacon.");
+            Task.Delay(1000).Wait();
+            Console.WriteLine($"> {name} grabs eggs.");
+            Task.Delay(1000).Wait();
+            Console.WriteLine($"> {name} grabs cheese.");
+            Task.Delay(1000).Wait();
+            Console.WriteLine($"> {name} grabs bread.");
+            Task.Delay(1000).Wait();
         }
 
         /// <summary>
         /// Spray the pan and begin heating it.
         /// </summary>
-        private void SprayAndHeatPan()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void SprayAndHeatPan(string name)
         {
-            Console.WriteLine("Spray pan with oil and turn on stove to medium heat.");
-            Task.Delay(3000).Wait();
+            // It takes 2 seconds to spray and heat up the pan.
+            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat.");
+            Task.Delay(2000).Wait();
         }
 
         /// <summary>
         /// Spray the pan and begin heating it asynchronously.
         /// </summary>
+        /// <param name="name">The name of the person making breakfast.</param>
         /// <returns></returns>
-        private async Task SprayAndHeatPanAsync()
+        private async Task SprayAndHeatPanAsync(string name)
         {
-            Console.WriteLine("Spray pan with oil and turn on stove to medium heat.");
-            await Task.Delay(3000);
+            // It takes 2 seconds to spray and heat up the pan.
+            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat.");
+            await Task.Delay(2000);
         }
 
         /// <summary>
         /// Cook the eggs.
         /// </summary>
-        private void CookEggs()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void CookEggs(string name)
         {
-            Console.WriteLine("Crack three eggs onto the pan and let them cook...");
+            // It takes 5 seconds to cook the eggs.
+            Console.WriteLine($"> {name} cracks two eggs onto the pan, adds cheese, and lets it cook...");
             Task.Delay(5000).Wait();
-            PutEggsOntoAPlate();
+            PutEggsOntoAPlate(name);
         }
 
         /// <summary>
         /// Cook the eggs asynchronously.
         /// </summary>
+        /// <param name="name">The name of the person making breakfast.</param>
         /// <returns></returns>
-        private async Task CookEggsAsync()
+        private async Task CookEggsAsync(string name)
         {
-            Console.WriteLine("Crack three eggs onto the pan and let them cook...");
+            // It takes 5 seconds to cook the eggs.
+            Console.WriteLine($"> {name} cracks two eggs onto the pan, adds cheese, and lets it cook...");
             await Task.Delay(5000);
-            PutEggsOntoAPlate();
+            PutEggsOntoAPlate(name);
         }
 
         /// <summary>
         /// Put the eggs onto a plate.
         /// </summary>
-        private void PutEggsOntoAPlate()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void PutEggsOntoAPlate(string name)
         {
-            Console.WriteLine("Put the eggs onto a plate.");
+            // It takes a second to put the eggs on a plate.
+            Console.WriteLine($"> {name} puts the eggs onto a plate.");
             Task.Delay(1000).Wait();
         }
 
         /// <summary>
         /// Cook the bacon.
         /// </summary>
-        private void CookBacon()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void CookBacon(string name)
         {
-            Console.WriteLine("Place bacon on pan and let it cook...");
+            // It takes 3 seconds to cook the bacon.
+            Console.WriteLine($"> {name} places the bacon on the pan and lets it cook...");
             Task.Delay(3000).Wait();
-            PutBaconOntoAPlate();
+            PutBaconOntoAPlate(name);
         }
 
         /// <summary>
         /// Put the bacon onto a plate.
         /// </summary>
-        private void PutBaconOntoAPlate()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void PutBaconOntoAPlate(string name)
         {
-            Console.WriteLine("Put the bacon onto a plate.");
+            // It takes a second to put the bacon on a plate.
+            Console.WriteLine($"> {name} puts the bacon onto a plate.");
             Task.Delay(1000).Wait();
         }
 
         /// <summary>
         /// Toast the bread.
         /// </summary>
-        private void ToastBread()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void ToastBread(string name)
         {
-            Console.WriteLine("Toast bread...");
+            // It takes 7 seconds to toast the bread.
+            Console.WriteLine($"> {name} toasts the bread...");
             Task.Delay(7000).Wait();
-            PutToastOntoAPlate();
+            PutToastOntoAPlate(name);
         }
 
         /// <summary>
         /// Toast the bread asynchronously.
         /// </summary>
+        /// <param name="name">The name of the person making breakfast.</param>
         /// <returns></returns>
-        private async Task ToastBreadAsync()
+        private async Task ToastBreadAsync(string name)
         {
-            Console.WriteLine("Toast bread...");
+            // It takes 7 seconds to toast the bread.
+            Console.WriteLine($"> {name} toasts the bread...");
             await Task.Delay(7000);
-            PutToastOntoAPlate();
+            PutToastOntoAPlate(name);
         }
 
         /// <summary>
         /// Put the toast onto a plate.
         /// </summary>
-        private void PutToastOntoAPlate()
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void PutToastOntoAPlate(string name)
         {
-            Console.WriteLine("Put toast onto a plate");
+            // It takes a second to put the toast on a plate.
+            Console.WriteLine($"> {name} puts the toast onto a plate.");
             Task.Delay(1000).Wait();
         }
 
@@ -156,16 +186,16 @@ namespace MultiThreading.Algorithms
         /// <param name="timeItTookToCookInMs">The time in took to cook in milliseconds.</param>
         private void BreakfastIsReady(long timeItTookToCookInMs)
         {
-            Console.WriteLine("Hooray, breakfast is ready!");
+            Console.WriteLine("> Hooray, breakfast is ready!");
 
             // Use some arbitrary threshold to dictate that breakfast took too long to make
             if (timeItTookToCookInMs > 20000)
             {
-                Console.WriteLine($"Yikes! Breakfast is cold, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                Console.WriteLine($"> Yikes! Breakfast is cold, it look this long to make: {timeItTookToCookInMs} ms!\n");
             }
             else
             {
-                Console.WriteLine($"Nice! Breakfast is hot, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                Console.WriteLine($"> Nice! Breakfast is hot, it look this long to make: {timeItTookToCookInMs} ms!\n");
             }
         }
     }

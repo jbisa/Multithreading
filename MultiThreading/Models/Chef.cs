@@ -6,7 +6,7 @@ namespace MultiThreading.Models
 {
     public class Chef
     {
-        string Name { get; }
+        public string Name { get; }
 
         private readonly BreakfastAlgorithm _breakfastAlgorithm;
 
@@ -22,13 +22,17 @@ namespace MultiThreading.Models
         public void PrepareBreakfast()
         {
             Console.Write($"{Name} begins to prepare breakfast...\n");
-            _breakfastAlgorithm.Make();
+            _breakfastAlgorithm.Make(Name);
         }
 
+        /// <summary>
+        /// Algorithm to prepare breakfast asynchrosnously.
+        /// </summary>
+        /// <returns></returns>
         public async Task PrepareBreakfastAsync()
         {
             Console.Write($"{Name} begins to prepare breakfast asynchronously...\n");
-            await _breakfastAlgorithm.MakeAsync();
+            await _breakfastAlgorithm.MakeAsync(Name);
         }
     }
 }
