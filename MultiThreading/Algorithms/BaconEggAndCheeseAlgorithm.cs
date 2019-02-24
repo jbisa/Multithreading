@@ -48,7 +48,7 @@ namespace MultiThreading.Algorithms
         private void GrabIngredients()
         {
             Console.WriteLine("Grab bacon, eggs, cheese and bread from the fridge.");
-            // Let's imagine this takes 1 second to do...
+            // Let's imagine this takes 2 second to do...
             Task.Delay(2000).Wait();
         }
 
@@ -158,6 +158,7 @@ namespace MultiThreading.Algorithms
         {
             Console.WriteLine("Hooray, breakfast is ready!");
 
+            // Use some arbitrary threshold to dictate that breakfast took too long to make
             if (timeItTookToCookInMs > 20000)
             {
                 Console.WriteLine($"Yikes! Breakfast is cold, it look this long to make: {timeItTookToCookInMs} ms!\n");

@@ -12,6 +12,7 @@ namespace MultiThreading.Algorithms
         /// <summary>
         /// Algorithm to make breakfast asynchronously.
         /// </summary>
+        /// <returns></returns>
         public abstract Task MakeAsync();
     }
 }
