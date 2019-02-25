@@ -37,7 +37,7 @@ namespace MultiThreading
             // 1. See how fast the chef can make breakfast synchrosnously
             Console.WriteLine($"{chefA.Name} begins to prepare breakfast synchronously... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             var stopWatch = Stopwatch.StartNew();
-
+                
             chefA.PrepareBreakfast();
             stopWatch.Stop();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
@@ -48,6 +48,7 @@ namespace MultiThreading
             await chefA.PrepareBreakfastAsync();
             stopWatch.Stop();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+
 
             // 3. Now, compare how fast breakfast can be made with TWO chefs
             // cooking synchronously (multithreaded programming)
@@ -87,7 +88,7 @@ namespace MultiThreading
             stopWatch.Stop();
             var total = numberOfWashedDishes.Sum();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
-            Console.WriteLine($"Number of dishes washed: {total}... Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");
+            Console.WriteLine($"Number of dishes washed: {total}... Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");*/
 
             // 4. What if we ran everything in parallel?? MULTITHREADING FTW!!!
             // The following is an example of Task Parallization
