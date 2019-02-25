@@ -11,23 +11,35 @@ namespace MultiThreading
     {
         static async System.Threading.Tasks.Task Main(string[] args)
         {
-            // Assign a chef in charge of making a Bacon Egg and Cheese Sandwich
+            // Assign a chef in charge of making a bacon, egg, and cheese sandwich
             var breakfastAlgorithmFactory = new BreakfastAlgorithmFactory();
             var breakfastAlgorithm = breakfastAlgorithmFactory
                 .GetBreakfastAlgorithm("BaconEggAndCheese");
             var chefA = new Chef("Jay", breakfastAlgorithm);
 
-            // Compare how fast the chef can make breakfast synchronously vs.
-            // asynchronously
+            // 1. See how fast the chef can make breakfast synchrosnously
+            Console.WriteLine($"{chefA.Name} begins to prepare breakfast synchronously...");
+            var stopWatch = Stopwatch.StartNew();
             chefA.PrepareBreakfast();
-            await chefA.PrepareBreakfastAsync();
+            stopWatch.Stop();
+            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
 
-            // Now, compare how fast breakfast can be made with two chefs
-            // cooking asynchronously (async-multithreaded programming)
+            // 2. See how fast the chef can make breakfast asynchrosnously
+            Console.WriteLine($"{chefA.Name} begins to prepare breakfast asynchronously...");          
+            stopWatch = Stopwatch.StartNew();
+            await chefA.PrepareBreakfastAsync();
+            stopWatch.Stop();
+            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+
+            // 3. Now, compare how fast breakfast can be made with TWO chefs
+            // cooking synchronously (multithreaded programming)
+
+            // Assign one chef to cook the eggs, cheese, and toast
             var eggAndCheeseAlgorithm = breakfastAlgorithmFactory
                 .GetBreakfastAlgorithm("EggAndCheese");
             var chefB = new Chef("Chris", eggAndCheeseAlgorithm);
 
+            // Assign another chef to cook the bacon
             var baconAlgorithm = breakfastAlgorithmFactory
                 .GetBreakfastAlgorithm("Bacon");
             var chefC = new Chef("Ian", baconAlgorithm);
@@ -36,15 +48,53 @@ namespace MultiThreading
             chefs.Add(chefB);
             chefs.Add(chefC);
 
-            var stopWatch = Stopwatch.StartNew();
+            Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together synchronously...");
+            stopWatch = Stopwatch.StartNew();
+            Parallel.ForEach(chefs, chef =>
+            {
+                chef.PrepareBreakfast();
+            });
+            stopWatch.Stop();
+            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+
+            // 4. Now, see how fast breakfast can be made with TWO chefs
+            // cooking asynchronously (async-multithreaded programming)
+            Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together asynchronously...");
+            stopWatch = Stopwatch.StartNew();
             Parallel.ForEach(chefs, chef =>
             {
                 chef.PrepareBreakfastAsync();
             });
             stopWatch.Stop();
+            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
 
-            Console.WriteLine($"{chefB.Name} and {chefC.Name} cooked breakast in: {stopWatch.ElapsedMilliseconds} ms!\n");
             Console.WriteLine("End of program...");
+        }
+
+        /// <summary>
+        /// Message that breakfast is ready.
+        /// </summary>
+        /// <param name="timeItTookToCookInMs">The time in took to cook in milliseconds.</param>
+        private static void BreakfastIsReady(long timeItTookToCookInMs)
+        {
+            Console.WriteLine("> Hooray, breakfast is ready!");
+
+            // Use some arbitrary threshold to dictate that breakfast took too long to make
+            if (timeItTookToCookInMs > 20000)
+            {
+                Console.WriteLine($"> Yikes! Breakfast is COLD, it look this long to make: {timeItTookToCookInMs} ms!\n");
+            }
+            else
+            {
+                if (timeItTookToCookInMs < 15000)
+                {
+                    Console.WriteLine($"> Awesome!! Breakfast is HOT, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                }
+                else
+                {
+                    Console.WriteLine($"> Nice! Breakfast is WARM, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                }
+            }
         }
     }
 }

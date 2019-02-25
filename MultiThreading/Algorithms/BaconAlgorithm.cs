@@ -11,6 +11,11 @@ namespace MultiThreading.Algorithms
         /// <param name="name">The name of the person making breakfast.</param>
         public override void Make(string name)
         {
+            GrabIngredients(name);
+            SprayAndHeatPan(name);
+            CookBacon(name);
+
+            Console.WriteLine($"> {name} has gotten the bacon ready!");
         }
 
         /// <summary>
@@ -22,6 +27,19 @@ namespace MultiThreading.Algorithms
             SprayAndHeatPanAsync(name);
             GrabIngredients(name);
             CookBacon(name);
+
+            Console.WriteLine($"> {name} has gotten the bacon ready!");
+        }
+
+        /// <summary>
+        /// Spray the pan and begin heating it.
+        /// </summary>
+        /// <param name="name">The name of the person making breakfast.</param>
+        private void SprayAndHeatPan(string name)
+        {
+            // It takes 2 seconds to spray and heat up the pan.
+            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat.");
+            Task.Delay(2000).Wait();
         }
 
         /// <summary>

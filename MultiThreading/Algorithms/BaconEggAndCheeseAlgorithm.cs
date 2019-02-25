@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MultiThreading.Algorithms
@@ -12,17 +11,13 @@ namespace MultiThreading.Algorithms
         /// <param name="name">The name of the person making breakfast.</param>
         public override void Make(string name)
         {
-            var stopWatch = Stopwatch.StartNew();
-
             GrabIngredients(name);
             SprayAndHeatPan(name);
             CookEggs(name);
             CookBacon(name);
             ToastBread(name);
 
-            stopWatch.Stop();
-
-            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+            Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready!");
         }
 
         /// <summary>
@@ -31,16 +26,13 @@ namespace MultiThreading.Algorithms
         /// <param name="name">The name of the person making breakfast.</param>
         public async override Task MakeAsync(string name)
         {
-            var stopWatch = Stopwatch.StartNew();
-
             SprayAndHeatPanAsync(name);
             GrabIngredients(name);
             ToastBreadAsync(name);
             await CookEggsAsync(name);
             CookBacon(name);
 
-            stopWatch.Stop();
-            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+            Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready!");
         }
 
         /// <summary>
@@ -178,25 +170,6 @@ namespace MultiThreading.Algorithms
             // It takes a second to put the toast on a plate.
             Console.WriteLine($"> {name} puts the toast onto a plate.");
             Task.Delay(1000).Wait();
-        }
-
-        /// <summary>
-        /// Message that breakfast is ready.
-        /// </summary>
-        /// <param name="timeItTookToCookInMs">The time in took to cook in milliseconds.</param>
-        private void BreakfastIsReady(long timeItTookToCookInMs)
-        {
-            Console.WriteLine("> Hooray, breakfast is ready!");
-
-            // Use some arbitrary threshold to dictate that breakfast took too long to make
-            if (timeItTookToCookInMs > 20000)
-            {
-                Console.WriteLine($"> Yikes! Breakfast is cold, it look this long to make: {timeItTookToCookInMs} ms!\n");
-            }
-            else
-            {
-                Console.WriteLine($"> Nice! Breakfast is hot, it look this long to make: {timeItTookToCookInMs} ms!\n");
-            }
         }
     }
 }

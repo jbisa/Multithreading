@@ -21,7 +21,6 @@ namespace MultiThreading.Models
         /// </summary>
         public void PrepareBreakfast()
         {
-            Console.Write($"{Name} begins to prepare breakfast...\n");
             _breakfastAlgorithm.Make(Name);
         }
 
@@ -31,7 +30,7 @@ namespace MultiThreading.Models
         /// <returns></returns>
         public async Task PrepareBreakfastAsync()
         {
-            Console.Write($"{Name} begins to prepare breakfast asynchronously...\n");
+            Console.WriteLine($"{Name} begins to prepare breakfast asynchronously...");
             await _breakfastAlgorithm.MakeAsync(Name);
         }
     }
