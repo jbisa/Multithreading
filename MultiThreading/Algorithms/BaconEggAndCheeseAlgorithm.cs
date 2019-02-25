@@ -31,9 +31,10 @@ namespace MultiThreading.Algorithms
         {
             SprayAndHeatPanAsync(name);
             GrabIngredients(name);
-            ToastBreadAsync(name);
+            var toastTask = ToastBreadAsync(name);
             await CookEggsAsync(name);
             CookBacon(name);
+            await toastTask;
 
             Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready! Thread ID: {Thread.CurrentThread.ManagedThreadId}");
 
