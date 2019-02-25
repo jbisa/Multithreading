@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Async;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace MultiThreading
 {
     class MakeBreakfast
     {
+        private static ConcurrentStack<string> PlacedOrders;
+        private static ConcurrentStack<string> CompletedOrders;
+        private static Thread waiter;
+        private static Thread cook;
+
         static async System.Threading.Tasks.Task Main(string[] args)
         {
             // Assign a chef in charge of making a bacon, egg, and cheese sandwich
@@ -51,56 +58,78 @@ namespace MultiThreading
             chefs.Add(chefB);
             chefs.Add(chefC);
 
+            // The following is an example of Data Parallization
             Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together synchronously...");
             stopWatch = Stopwatch.StartNew();
+            var numberOfWashedDishes = new ConcurrentBag<int>();
             Parallel.ForEach(chefs, chef =>
             {
                 try
                 {
                     chef.PrepareBreakfast();
+                    var value = chef.WashDish();
+                    numberOfWashedDishes.Add(value);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("Uh Ohh, fire in the kitchen!!");
                 }
             });
+
             stopWatch.Stop();
+            var total = numberOfWashedDishes.Sum();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+            Console.WriteLine($"Number of dishes washed: {total}");
 
-            /*
-            // 4. Now, see how fast breakfast can be made with TWO chefs
-            // cooking asynchronously (async-multithreaded programming)
-            Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together asynchronously...");
+            // 4. What if we ran everything in parallel?? MULTITHREADING FTW!!!
+            // The following is an example of Task Parallization
+            Console.WriteLine($"Now let's see what happens if EVERYTHING runs in parallel...");
             stopWatch = Stopwatch.StartNew();
-
-            await chefs.ParallelForEachAsync(async chef => {
-                try
-                {
-                    chef.PrepareBreakfastAsync();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Uh Ohh, fire in the kitchen!!");
-                }
-            }, maxDegreeOfParalellism: 10);
+            Parallel.Invoke(HostTakeReservation, WaiterTakeOrder, CookMakeOrder);
+            stopWatch.Stop();
+            Console.WriteLine($"Invoking everything in parallel finished in: {stopWatch.ElapsedMilliseconds}");
 
             /*
-            Parallel.ForEach(chefs, chef =>
-            {
-                try
-                {
-                    chef.PrepareBreakfastAsync();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Uh Ohh, fire in the kitchen!!");
-                }
-            });
+            var placedOrders = new ConcurrentBag<String>();
 
-            stopWatch.Stop();
-            BreakfastIsReady(stopWatch.ElapsedMilliseconds);*/
+            placedOrders.Add("EggAndCheese");
+            placedOrders.Add("Bacon");
+
+            waiter = new Thread(new ThreadStart(SendOrderToKitchen));
+            cook = new Thread(new ThreadStart(SendOrderToCustomer));
+            foreach(var order in placedOrders)
+            {
+                PlacedOrders.Push(order);
+                waiter.Start();
+                cook.Start();
+            }*/
 
             Console.WriteLine("End of program...");
+        }
+
+        private static void HostTakeReservation()
+        {
+            Console.WriteLine($"Host greets customers and takes them to their seat: Thread ID = {Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        private static void WaiterTakeOrder()
+        {
+            Console.WriteLine($"Waiter takes order: Thread ID = {Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        private static void CookMakeOrder()
+        {
+            Console.WriteLine($"Cook makes order: Thread ID = {Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        private static void SendOrderToKitchen()
+        {
+            PlacedOrders.Push("foo");
+        }
+
+        private static void SendOrderToCustomer()
+        {
+            CompletedOrders.Push(PlacedOrders.First());
         }
 
         /// <summary>

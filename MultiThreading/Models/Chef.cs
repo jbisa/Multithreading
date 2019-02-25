@@ -32,5 +32,10 @@ namespace MultiThreading.Models
         {
             return await _breakfastAlgorithm.MakeAsync(Name);
         }
+
+        public int WashDish()
+        {
+            return 1;
+        }
     }
 }
