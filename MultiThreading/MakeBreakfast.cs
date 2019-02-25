@@ -27,7 +27,7 @@ namespace MultiThreading
             var chefA = new Chef("Jay", breakfastAlgorithm);
 
             // 1. See how fast the chef can make breakfast synchrosnously
-            Console.WriteLine($"{chefA.Name} begins to prepare breakfast synchronously...");
+            Console.WriteLine($"{chefA.Name} begins to prepare breakfast synchronously... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             var stopWatch = Stopwatch.StartNew();
 
             chefA.PrepareBreakfast();
@@ -35,7 +35,7 @@ namespace MultiThreading
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
 
             // 2. See how fast the chef can make breakfast asynchrosnously
-            Console.WriteLine($"{chefA.Name} begins to prepare breakfast asynchronously...");          
+            Console.WriteLine($"{chefA.Name} begins to prepare breakfast asynchronously... Thread ID: {Thread.CurrentThread.ManagedThreadId}");          
             stopWatch = Stopwatch.StartNew();
             await chefA.PrepareBreakfastAsync();
             stopWatch.Stop();
@@ -59,7 +59,7 @@ namespace MultiThreading
             chefs.Add(chefC);
 
             // The following is an example of Data Parallization
-            Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together synchronously...");
+            Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together synchronously... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             stopWatch = Stopwatch.StartNew();
             var numberOfWashedDishes = new ConcurrentBag<int>();
             Parallel.ForEach(chefs, chef =>
@@ -79,15 +79,15 @@ namespace MultiThreading
             stopWatch.Stop();
             var total = numberOfWashedDishes.Sum();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
-            Console.WriteLine($"Number of dishes washed: {total}\n");
+            Console.WriteLine($"Number of dishes washed: {total}... Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");
 
             // 4. What if we ran everything in parallel?? MULTITHREADING FTW!!!
             // The following is an example of Task Parallization
-            Console.WriteLine($"Now let's see what happens if EVERYTHING runs in parallel...");
+            Console.WriteLine($"Now let's see what happens if EVERYTHING runs in parallel... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             stopWatch = Stopwatch.StartNew();
             Parallel.Invoke(HostTakeReservation, WaiterTakeOrder, CookMakeOrder);
             stopWatch.Stop();
-            Console.WriteLine($"Invoking everything in parallel finished in: {stopWatch.ElapsedMilliseconds}");
+            Console.WriteLine($"Invoking everything in parallel finished in: {stopWatch.ElapsedMilliseconds}... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
 
             /*
             var placedOrders = new ConcurrentBag<String>();
@@ -104,7 +104,7 @@ namespace MultiThreading
                 cook.Start();
             }*/
 
-            Console.WriteLine("End of program...");
+            Console.WriteLine($"End of program... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
         }
 
         private static void HostTakeReservation()
@@ -143,17 +143,17 @@ namespace MultiThreading
             // Use some arbitrary threshold to dictate that breakfast took too long to make
             if (timeItTookToCookInMs > 20000)
             {
-                Console.WriteLine($"> Yikes! Breakfast is COLD, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                Console.WriteLine($"> Yikes! Breakfast is COLD, it look this long to make: {timeItTookToCookInMs} ms! Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");
             }
             else
             {
                 if (timeItTookToCookInMs < 15000)
                 {
-                    Console.WriteLine($"> Awesome!! Breakfast is HOT, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                    Console.WriteLine($"> Awesome!! Breakfast is HOT, it look this long to make: {timeItTookToCookInMs} ms! Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");
                 }
                 else
                 {
-                    Console.WriteLine($"> Nice! Breakfast is WARM, it look this long to make: {timeItTookToCookInMs} ms!\n");
+                    Console.WriteLine($"> Nice! Breakfast is WARM, it look this long to make: {timeItTookToCookInMs} ms! Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");
                 }
             }
         }
