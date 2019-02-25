@@ -9,7 +9,7 @@ namespace MultiThreading.Algorithms
         /// Algorithm to make breakfast.
         /// </summary>
         /// <param name="name">The name of the person making breakfast.</param>
-        public override void Make(string name)
+        public override bool Make(string name)
         {
             GrabIngredients(name);
             SprayAndHeatPan(name);
@@ -18,13 +18,15 @@ namespace MultiThreading.Algorithms
             ToastBread(name);
 
             Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready!");
+
+            return true;
         }
 
         /// <summary>
         /// Algorithm to make breakfast asynchronously.
         /// </summary>
         /// <param name="name">The name of the person making breakfast.</param>
-        public async override Task MakeAsync(string name)
+        public async override Task<bool> MakeAsync(string name)
         {
             SprayAndHeatPanAsync(name);
             GrabIngredients(name);
@@ -33,6 +35,8 @@ namespace MultiThreading.Algorithms
             CookBacon(name);
 
             Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready!");
+
+            return true;
         }
 
         /// <summary>

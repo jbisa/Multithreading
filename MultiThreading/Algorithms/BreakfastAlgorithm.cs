@@ -8,13 +8,13 @@ namespace MultiThreading.Algorithms
         /// Algorithm to make breakfast.
         /// </summary>
         /// <param name="name">The name of the person making breakfast.</param>
-        public abstract void Make(string name);
+        public abstract bool Make(string name);
 
         /// <summary>
         /// Algorithm to make breakfast asynchronously.
         /// </summary>
         /// <param name="name">The name of the person making breakfast.</param>
         /// <returns></returns>
-        public abstract Task MakeAsync(string name);
+        public abstract Task<bool> MakeAsync(string name);
     }
 }

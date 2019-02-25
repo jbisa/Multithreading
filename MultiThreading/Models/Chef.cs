@@ -19,19 +19,18 @@ namespace MultiThreading.Models
         /// <summary>
         /// Algorithm to prepare breakfast.
         /// </summary>
-        public void PrepareBreakfast()
+        public bool PrepareBreakfast()
         {
-            _breakfastAlgorithm.Make(Name);
+            return _breakfastAlgorithm.Make(Name);
         }
 
         /// <summary>
         /// Algorithm to prepare breakfast asynchrosnously.
         /// </summary>
         /// <returns></returns>
-        public async Task PrepareBreakfastAsync()
+        public async Task<bool> PrepareBreakfastAsync()
         {
-            Console.WriteLine($"{Name} begins to prepare breakfast asynchronously...");
-            await _breakfastAlgorithm.MakeAsync(Name);
+            return await _breakfastAlgorithm.MakeAsync(Name);
         }
     }
 }

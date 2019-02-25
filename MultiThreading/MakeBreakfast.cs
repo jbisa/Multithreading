@@ -20,6 +20,7 @@ namespace MultiThreading
             // 1. See how fast the chef can make breakfast synchrosnously
             Console.WriteLine($"{chefA.Name} begins to prepare breakfast synchronously...");
             var stopWatch = Stopwatch.StartNew();
+
             chefA.PrepareBreakfast();
             stopWatch.Stop();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
@@ -52,7 +53,14 @@ namespace MultiThreading
             stopWatch = Stopwatch.StartNew();
             Parallel.ForEach(chefs, chef =>
             {
-                chef.PrepareBreakfast();
+                try
+                {
+                    chef.PrepareBreakfast();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Uh Ohh, fire in the kitchen!!");
+                }
             });
             stopWatch.Stop();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
@@ -61,10 +69,19 @@ namespace MultiThreading
             // cooking asynchronously (async-multithreaded programming)
             Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together asynchronously...");
             stopWatch = Stopwatch.StartNew();
+
             Parallel.ForEach(chefs, chef =>
             {
-                chef.PrepareBreakfastAsync();
+                try
+                {
+                    chef.PrepareBreakfastAsync();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Uh Ohh, fire in the kitchen!!");
+                }
             });
+
             stopWatch.Stop();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
 
