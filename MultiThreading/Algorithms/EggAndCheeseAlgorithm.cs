@@ -29,7 +29,7 @@ namespace MultiThreading.Algorithms
         {
             SprayAndHeatPanAsync(name);
             GrabIngredients(name);
-            ToastBreadAsync(name);
+            await ToastBreadAsync(name);
             await CookEggsAsync(name);
 
             Console.WriteLine($"> {name} has gotten the eggs, cheese, and toast ready!");

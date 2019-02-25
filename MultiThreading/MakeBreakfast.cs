@@ -4,6 +4,8 @@ using MultiThreading.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
+using System.Collections.Async;
 
 namespace MultiThreading
 {
@@ -65,11 +67,24 @@ namespace MultiThreading
             stopWatch.Stop();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
 
+            /*
             // 4. Now, see how fast breakfast can be made with TWO chefs
             // cooking asynchronously (async-multithreaded programming)
             Console.WriteLine($"{chefB.Name} and {chefC.Name} begin to prepare breakfast together asynchronously...");
             stopWatch = Stopwatch.StartNew();
 
+            await chefs.ParallelForEachAsync(async chef => {
+                try
+                {
+                    chef.PrepareBreakfastAsync();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Uh Ohh, fire in the kitchen!!");
+                }
+            }, maxDegreeOfParalellism: 10);
+
+            /*
             Parallel.ForEach(chefs, chef =>
             {
                 try
@@ -83,7 +98,7 @@ namespace MultiThreading
             });
 
             stopWatch.Stop();
-            BreakfastIsReady(stopWatch.ElapsedMilliseconds);
+            BreakfastIsReady(stopWatch.ElapsedMilliseconds);*/
 
             Console.WriteLine("End of program...");
         }
