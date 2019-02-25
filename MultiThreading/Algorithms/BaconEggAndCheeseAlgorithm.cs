@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MultiThreading.Algorithms
@@ -17,7 +18,7 @@ namespace MultiThreading.Algorithms
             CookBacon(name);
             ToastBread(name);
 
-            Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready!");
+            Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready! Thread ID: {Thread.CurrentThread.ManagedThreadId}");
 
             return true;
         }
@@ -34,7 +35,7 @@ namespace MultiThreading.Algorithms
             await CookEggsAsync(name);
             CookBacon(name);
 
-            Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready!");
+            Console.WriteLine($"> {name} has gotten the bacon, eggs, cheese, and toast ready! Thread ID: {Thread.CurrentThread.ManagedThreadId}");
 
             return true;
         }
@@ -48,13 +49,13 @@ namespace MultiThreading.Algorithms
             // Imagine this is a call to a repository (cache and/or DB). Each
             // item is a table from the "fridge" DB and it takes a second to get
             // each.
-            Console.WriteLine($"> {name} grabs bacon.");
+            Console.WriteLine($"> {name} grabs bacon. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
-            Console.WriteLine($"> {name} grabs eggs.");
+            Console.WriteLine($"> {name} grabs eggs. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
-            Console.WriteLine($"> {name} grabs cheese.");
+            Console.WriteLine($"> {name} grabs cheese. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
-            Console.WriteLine($"> {name} grabs bread.");
+            Console.WriteLine($"> {name} grabs bread. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
         }
 
@@ -65,7 +66,7 @@ namespace MultiThreading.Algorithms
         private void SprayAndHeatPan(string name)
         {
             // It takes 2 seconds to spray and heat up the pan.
-            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat.");
+            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(2000).Wait();
         }
 
@@ -77,7 +78,7 @@ namespace MultiThreading.Algorithms
         private async Task SprayAndHeatPanAsync(string name)
         {
             // It takes 2 seconds to spray and heat up the pan.
-            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat.");
+            Console.WriteLine($"> {name} sprays pan with oil and turns on stove to medium heat. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             await Task.Delay(2000);
         }
 
@@ -88,7 +89,7 @@ namespace MultiThreading.Algorithms
         private void CookEggs(string name)
         {
             // It takes 5 seconds to cook the eggs.
-            Console.WriteLine($"> {name} cracks two eggs onto the pan, adds cheese, and lets it cook...");
+            Console.WriteLine($"> {name} cracks two eggs onto the pan, adds cheese, and lets it cook... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(5000).Wait();
             PutEggsOntoAPlate(name);
         }
@@ -101,7 +102,7 @@ namespace MultiThreading.Algorithms
         private async Task CookEggsAsync(string name)
         {
             // It takes 5 seconds to cook the eggs.
-            Console.WriteLine($"> {name} cracks two eggs onto the pan, adds cheese, and lets it cook...");
+            Console.WriteLine($"> {name} cracks two eggs onto the pan, adds cheese, and lets it cook... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             await Task.Delay(5000);
             PutEggsOntoAPlate(name);
         }
@@ -113,7 +114,7 @@ namespace MultiThreading.Algorithms
         private void PutEggsOntoAPlate(string name)
         {
             // It takes a second to put the eggs on a plate.
-            Console.WriteLine($"> {name} puts the eggs onto a plate.");
+            Console.WriteLine($"> {name} puts the eggs onto a plate. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
         }
 
@@ -124,7 +125,7 @@ namespace MultiThreading.Algorithms
         private void CookBacon(string name)
         {
             // It takes 3 seconds to cook the bacon.
-            Console.WriteLine($"> {name} places the bacon on the pan and lets it cook...");
+            Console.WriteLine($"> {name} places the bacon on the pan and lets it cook... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(3000).Wait();
             PutBaconOntoAPlate(name);
         }
@@ -136,7 +137,7 @@ namespace MultiThreading.Algorithms
         private void PutBaconOntoAPlate(string name)
         {
             // It takes a second to put the bacon on a plate.
-            Console.WriteLine($"> {name} puts the bacon onto a plate.");
+            Console.WriteLine($"> {name} puts the bacon onto a plate. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
         }
 
@@ -147,7 +148,7 @@ namespace MultiThreading.Algorithms
         private void ToastBread(string name)
         {
             // It takes 7 seconds to toast the bread.
-            Console.WriteLine($"> {name} toasts the bread...");
+            Console.WriteLine($"> {name} toasts the bread... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(7000).Wait();
             PutToastOntoAPlate(name);
         }
@@ -160,7 +161,7 @@ namespace MultiThreading.Algorithms
         private async Task ToastBreadAsync(string name)
         {
             // It takes 7 seconds to toast the bread.
-            Console.WriteLine($"> {name} toasts the bread...");
+            Console.WriteLine($"> {name} toasts the bread... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             await Task.Delay(7000);
             PutToastOntoAPlate(name);
         }
@@ -172,7 +173,7 @@ namespace MultiThreading.Algorithms
         private void PutToastOntoAPlate(string name)
         {
             // It takes a second to put the toast on a plate.
-            Console.WriteLine($"> {name} puts the toast onto a plate.");
+            Console.WriteLine($"> {name} puts the toast onto a plate. Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(1000).Wait();
         }
     }

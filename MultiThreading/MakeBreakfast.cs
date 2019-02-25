@@ -79,7 +79,7 @@ namespace MultiThreading
             stopWatch.Stop();
             var total = numberOfWashedDishes.Sum();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
-            Console.WriteLine($"Number of dishes washed: {total}");
+            Console.WriteLine($"Number of dishes washed: {total}\n");
 
             // 4. What if we ran everything in parallel?? MULTITHREADING FTW!!!
             // The following is an example of Task Parallization
