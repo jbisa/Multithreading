@@ -17,7 +17,6 @@ namespace MultiThreading
         private static ConcurrentQueue<string> PlacedOrders;
         private static ConcurrentQueue<string> CompletedOrders;
         private static int numberOfCustomerOrders;
-        private static int numberOfDeliveredOrders;
         private static Thread waiter1;
         private static Thread waiter2;
         private static Thread server1;
@@ -30,7 +29,7 @@ namespace MultiThreading
         static async System.Threading.Tasks.Task Main(string[] args)
         {
             // Assign a chef in charge of making a bacon, egg, and cheese sandwich
-            var breakfastAlgorithmFactory = new BreakfastAlgorithmFactory();
+           /* var breakfastAlgorithmFactory = new BreakfastAlgorithmFactory();
             var breakfastAlgorithm = breakfastAlgorithmFactory
                 .GetBreakfastAlgorithm("BaconEggAndCheese");
             var chefA = new Chef("Jay", breakfastAlgorithm);
@@ -97,7 +96,7 @@ namespace MultiThreading
             Parallel.Invoke(HostTakeReservation, WaiterTakeOrder, CookMakeOrder);
             stopWatch.Stop();
             Console.WriteLine($"Invoking everything in parallel finished in: {stopWatch.ElapsedMilliseconds}... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
-
+            */
             // 5. How would we solve the synchronization problem in 4?
             // The following is an example of synchronized or Managed Task Parallelization
             var orders = new List<string>
@@ -178,31 +177,29 @@ namespace MultiThreading
 
         private static void SendOrderToKitchen()
         {
-            string currentOrder = string.Empty;
+            string currentOrder;
             //Loop through orders
-            while (manager.IsAlive || !CustomerOrders.IsEmpty)
+            while (!CustomerOrders.IsEmpty)
             {
-                Console.WriteLine("Getting customer order...");
-                bool retrieved;
-                if (retrieved = CustomerOrders.TryDequeue(out currentOrder))
+                if (CustomerOrders.TryDequeue(out currentOrder))
                 {
+                    Console.WriteLine("Placing order for {0}", currentOrder);
                     //Make sure order is sent to cook
                     PlacedOrders.Enqueue(currentOrder);
                 }
-                Console.WriteLine("Order was retrieved? {0}", retrieved);
-                Thread.Sleep(200);
+                Thread.Sleep(2000);
             }
         }
 
         private static void SendOrderToServer()
         {
-            Console.WriteLine("Cook started");
-            var orderToCook = string.Empty;
-            while (manager.IsAlive || !PlacedOrders.IsEmpty)
+            string orderToCook;
+            while (waiter1.IsAlive || waiter2.IsAlive || !PlacedOrders.IsEmpty)
             {
                 if (PlacedOrders.TryDequeue(out orderToCook))
                 {
-                    Thread.Sleep(new Random().Next(0, 500));
+                    Console.WriteLine("Cooking {0}", orderToCook);
+                    Thread.Sleep(new Random().Next(0, 5000));
                     CompletedOrders.Enqueue(orderToCook);
                 }
             }
@@ -210,26 +207,26 @@ namespace MultiThreading
 
         private static void SendOrderToCustomer()
         {
-            string completedOrder = string.Empty;
-            while (manager.IsAlive || !CompletedOrders.IsEmpty)
+            string completedOrder;
+            while (cook1.IsAlive || cook2.IsAlive || cook3.IsAlive || !CompletedOrders.IsEmpty)
             {
                 if (CompletedOrders.TryDequeue(out completedOrder))
                 {
-                    Console.WriteLine(completedOrder + "has been delivered to customer");
-                    numberOfDeliveredOrders++;
+                    Console.WriteLine(completedOrder + " has been delivered to customer");
                 }
+                Thread.Sleep(1000);
             }
         }
 
         private static void FinishBreakfast()
         {
-            while (numberOfCustomerOrders != numberOfDeliveredOrders)
-            {
-                Console.WriteLine("Come on team, we've got {0} more orders to go",
-                    numberOfCustomerOrders - numberOfDeliveredOrders);
-                Thread.Sleep(100);
-            }
-            Console.WriteLine("All Orders have been completed, good work team!");
+            waiter1.Join();
+            waiter2.Join();
+            cook1.Join();
+            cook2.Join();
+            cook3.Join();
+            server1.Join();
+            server2.Join();
         }
 
         /// <summary>
