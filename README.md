@@ -24,5 +24,5 @@ scenario:
     * Strategy pattern
 
 ## Authors
-- @jbisa
-- @echnaba
+- [@jbisa](https://github.com/jbisa)
+- [@echnaba](https://github.com/echnaba)
