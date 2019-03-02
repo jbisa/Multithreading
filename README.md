@@ -1,4 +1,4 @@
-# Multithreading
+# Async and Multithreaded Programming in .NET
 This project explores asynchronous programming and multithreading in .NET.
 
 ## Requirements
