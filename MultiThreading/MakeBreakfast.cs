@@ -29,7 +29,7 @@ namespace MultiThreading
         static async System.Threading.Tasks.Task Main(string[] args)
         {
             // Assign a chef in charge of making a bacon, egg, and cheese sandwich
-           /* var breakfastAlgorithmFactory = new BreakfastAlgorithmFactory();
+            var breakfastAlgorithmFactory = new BreakfastAlgorithmFactory();
             var breakfastAlgorithm = breakfastAlgorithmFactory
                 .GetBreakfastAlgorithm("BaconEggAndCheese");
             var chefA = new Chef("Jay", breakfastAlgorithm);
@@ -88,7 +88,7 @@ namespace MultiThreading
             stopWatch.Stop();
             var total = numberOfWashedDishes.Sum();
             BreakfastIsReady(stopWatch.ElapsedMilliseconds);
-            Console.WriteLine($"Number of dishes washed: {total}... Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");*/
+            Console.WriteLine($"Number of dishes washed: {total}... Thread ID: {Thread.CurrentThread.ManagedThreadId}\n");
 
             // 4. What if we ran everything in parallel?? MULTITHREADING FTW!!!
             // The following is an example of Task Parallization
@@ -97,7 +97,7 @@ namespace MultiThreading
             Parallel.Invoke(HostTakeReservation, WaiterTakeOrder, CookMakeOrder);
             stopWatch.Stop();
             Console.WriteLine($"Invoking everything in parallel finished in: {stopWatch.ElapsedMilliseconds}... Thread ID: {Thread.CurrentThread.ManagedThreadId}");
-            */
+
             // 5. How would we solve the synchronization problem in 4?
             // The following is an example of synchronized or Managed Task Parallelization
             var orders = new List<string>
@@ -130,6 +130,7 @@ namespace MultiThreading
                 "EggsOverEasy",
                 "EggSandwich"
             };
+
             CustomerOrders = new ConcurrentQueue<string>();
             PlacedOrders = new ConcurrentQueue<string>();
             CompletedOrders = new ConcurrentQueue<string>();
